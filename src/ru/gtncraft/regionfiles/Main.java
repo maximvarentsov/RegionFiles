@@ -1,9 +1,6 @@
 package ru.gtncraft.regionfiles;
 
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.*;
 
 public class Main {
 
@@ -32,28 +29,28 @@ public class Main {
                     int z1 = lowerZ & ~0xf;
                     int z2 = upperZ & ~0xf;
                     System.out.println("Region files for p1[" + lowerX + ", " + lowerZ + "] " + "p2[" + upperX + ", " + upperZ + "]:");
-                    Map<Integer, Integer> regions = new LinkedHashMap<Integer, Integer>();
+                    Collection<String> regions = new HashSet<String>();
                     for (int x = x1; x <= x2; x += 16) {
                         for (int z = z1; z <= z2; z += 16) {
                             int chunkX = x >> 4;
                             int chunkZ = z >> 4;
                             int regionX = chunkX >> 5;
                             int regionZ = chunkZ >> 5;
-                            regions.put(regionX, regionZ);
+                            String value = regionX + "." + regionZ;
+                            regions.add(value);
                         }
                     }
-                    for (Map.Entry<Integer, Integer> entry : regions.entrySet()) {
-                        System.out.print("r." + entry.getKey() + "." + entry.getValue() + ".mca");
+                    for (String value : regions) {
+                        System.out.print("r." + value + ".mca");
                         System.out.print(" ");
                     }
                     System.out.println();
                 }
             } catch (Throwable ex) {
                 System.out.println(usage);
-                ex.printStackTrace();
                 System.exit(1);
             }
             i+=2;
-        } while (i < args.length);
+        } while (args.length > i);
     }
 }
