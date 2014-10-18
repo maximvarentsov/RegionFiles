@@ -17,7 +17,7 @@ public class Main {
     public static void main(String args[]) throws IOException {
         int x1 = 0, x2 = 0, z1 = 0, z2 = 0;
         String path = null;
-        File out;
+        File out = new File("out");
 
         try {
             path = args[0].substring(7);
@@ -28,15 +28,12 @@ public class Main {
             z2 = Integer.parseInt(xzxz[3]);
             if (args[2].startsWith("-out=")) {
                 out = new File(args[2].substring(5));
-            } else {
-                out = new File("out");
             }
         } catch (Throwable ex) {
             System.out.println(usage);
             System.exit(1);
         }
 
-        out = new File("out");
         if (out.exists()) {
             out.delete();
             out.mkdir();
