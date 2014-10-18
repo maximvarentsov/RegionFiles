@@ -16,8 +16,7 @@ public class Main {
 
     public static void main(String args[]) {
         int x1 = 0, x2 = 0, z1 = 0, z2 = 0;
-        String world = "world";
-        String out = "out";
+        String world = "world", out = "out";
 
         try {
             String[] xzxz = args[0].substring(6).split(",");
@@ -25,14 +24,15 @@ public class Main {
             z1 = Integer.parseInt(xzxz[1]);
             x2 = Integer.parseInt(xzxz[2]);
             z2 = Integer.parseInt(xzxz[3]);
-            if (args[1].startsWith("-world=")) {
+            if (args.length > 1 && args[1].startsWith("-world=")) {
                 world = args[1].substring(7);
             }
-            if (args[2].startsWith("-out=")) {
+            if (args.length > 2 && args[2].startsWith("-out=")) {
                 out = args[2].substring(5);
             }
         } catch (Throwable ex) {
             System.out.println(usage);
+            ex.printStackTrace();
             System.exit(1);
         }
 
