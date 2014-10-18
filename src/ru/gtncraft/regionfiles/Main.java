@@ -32,7 +32,6 @@ public class Main {
             }
         } catch (Throwable ex) {
             System.out.println(usage);
-            ex.printStackTrace();
             System.exit(1);
         }
 
@@ -44,7 +43,7 @@ public class Main {
         try {
             new Main(new File(world), new File(out), lowerX, lowerZ, upperX, upperZ);
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
             System.exit(1);
         }
     }
