@@ -12,12 +12,12 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class Main {
-    private final static String usage = "Usage: -cube=x1,z1,x2,z2 [-world=/path/to/world] [-out=out]";
+    private final static String usage = "Usage: -cube=x1,z1,x2,z2 [-world=world] [-out=out]";
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         int x1 = 0, x2 = 0, z1 = 0, z2 = 0;
-        String path = "world";
-        File out = new File("out");
+        String world = "world";
+        String out = "out";
 
         try {
             String[] xzxz = args[0].substring(6).split(",");
@@ -26,25 +26,34 @@ public class Main {
             x2 = Integer.parseInt(xzxz[2]);
             z2 = Integer.parseInt(xzxz[3]);
             if (args[1].startsWith("-world=")) {
-                path = args[1].substring(7);
+                world = args[1].substring(7);
             }
             if (args[2].startsWith("-out=")) {
-                out = new File(args[2].substring(5));
+                out = args[2].substring(5);
             }
         } catch (Throwable ex) {
             System.out.println(usage);
             System.exit(1);
         }
 
-        if (out.exists()) {
-            out.delete();
-            out.mkdir();
-        }
-
         int lowerX = Math.min(x1, x2);
         int lowerZ = Math.min(z1, z2);
         int upperX = Math.max(x1, x2);
         int upperZ = Math.max(z1, z2);
+
+        try {
+            new Main(new File(world), new File(out), lowerX, lowerZ, upperX, upperZ);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    public Main(File world, File out, int lowerX, int lowerZ, int upperX, int upperZ) throws IOException {
+        if (out.exists()) {
+            out.delete();
+            out.mkdir();
+        }
 
         Collection<Region> regions = Cuboid.getRegions(lowerX, lowerZ, upperX, upperZ);
         Multimap<Integer, Integer> chunks = Cuboid.getChunks(lowerX, lowerZ, upperX, upperZ);
@@ -61,7 +70,7 @@ public class Main {
         }
 
         for (Region region : regions) {
-            File src = new File(path, region.toString());
+            File src = new File(world, region.toString());
             copyFile(src, out);
             File dst = new File(out, region.toString());
 
@@ -79,7 +88,7 @@ public class Main {
         }
     }
 
-    public static void copyFile(File sourceFile, File destFile) throws IOException {
+    private void copyFile(File sourceFile, File destFile) throws IOException {
         if (!destFile.exists()) {
             destFile.createNewFile();
         }
