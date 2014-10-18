@@ -3,8 +3,6 @@ package ru.gtncraft.regionfiles;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.io.File;
-
 public class Region {
     public final int x;
     public final int z;
