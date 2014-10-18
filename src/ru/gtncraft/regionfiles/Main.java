@@ -12,20 +12,22 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class Main {
-    private final static String usage = "Usage: -world=/path/to/world -cube=x1,z1,x2,z2 [-out=out]";
+    private final static String usage = "Usage: -cube=x1,z1,x2,z2 [-world=/path/to/world] [-out=out]";
 
     public static void main(String args[]) throws IOException {
         int x1 = 0, x2 = 0, z1 = 0, z2 = 0;
-        String path = null;
+        String path = "world";
         File out = new File("out");
 
         try {
-            path = args[0].substring(7);
-            String[] xzxz = args[1].substring(6).split(",");
+            String[] xzxz = args[0].substring(6).split(",");
             x1 = Integer.parseInt(xzxz[0]);
             z1 = Integer.parseInt(xzxz[1]);
             x2 = Integer.parseInt(xzxz[2]);
             z2 = Integer.parseInt(xzxz[3]);
+            if (args[1].startsWith("-world=")) {
+                path = args[1].substring(7);
+            }
             if (args[2].startsWith("-out=")) {
                 out = new File(args[2].substring(5));
             }
