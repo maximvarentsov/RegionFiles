@@ -94,8 +94,7 @@ public class Main {
             destFile.createNewFile();
         }
 
-        FileChannel source = null;
-        FileChannel destination = null;
+        FileChannel source = null, destination = null;
 
         try {
             source = new FileInputStream(sourceFile).getChannel();
