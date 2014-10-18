@@ -1,6 +1,12 @@
 RegionFiles
 ===========
 
-Get minecraft region file name by cube coordinates
+Copy r.x.z.mca files by cuboid coordinates to output dir and remove unused chunks.
 
-Usage example: java -jar RegionFiles.jar -p1=1,1 -p2=100,300 -p1=200,200 -p2=100,500
+Usage
+=====
+-world=/path/to/world -cube=x1,z1,x2,z2 [-out=out]
+
+Usage example
+=============
+java -jar RegionFiles.jar -world=/path/to/world -cube=1,2,200,400
