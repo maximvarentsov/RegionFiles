@@ -12,11 +12,12 @@ import java.nio.channels.FileChannel;
 import java.util.*;
 
 public class Main {
-    private final static String usage = "Usage: -cube=x1,z1,x2,z2 [-world=world] [-out=out]";
+    private final static String usage = "Usage: -cube=x1,z1,x2,z2 [-world=world] [-out=out] [-delete]";
 
     public static void main(String args[]) {
         int x1 = 0, x2 = 0, z1 = 0, z2 = 0;
         String world = "world", out = "out";
+        boolean delete = false;
 
         try {
             String[] xzxz = args[0].substring(6).split(",");
@@ -30,6 +31,9 @@ public class Main {
             if (args.length > 2 && args[2].startsWith("-out=")) {
                 out = args[2].substring(5);
             }
+            if (args.length > 3 && args[3].equals("-delete")) {
+                delete = true;
+            }
         } catch (Throwable ex) {
             System.out.println(usage);
             System.exit(1);
@@ -41,18 +45,18 @@ public class Main {
         int upperZ = Math.max(z1, z2);
 
         try {
-            new Main(new File(world), new File(out), lowerX, lowerZ, upperX, upperZ);
+            new Main(new File(world), new File(out), lowerX, lowerZ, upperX, upperZ, delete);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
             System.exit(1);
         }
     }
 
-    public Main(File world, File out, int lowerX, int lowerZ, int upperX, int upperZ) throws IOException {
-        if (out.exists()) {
+    public Main(File world, File out, int lowerX, int lowerZ, int upperX, int upperZ, boolean delete) throws IOException {
+        if (delete) {
             out.delete();
-            out.mkdir();
         }
+        out.mkdir();
 
         Collection<Region> regions = Cuboid.getRegions(lowerX, lowerZ, upperX, upperZ);
         Multimap<Integer, Integer> chunks = Cuboid.getChunks(lowerX, lowerZ, upperX, upperZ);
