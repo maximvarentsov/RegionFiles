@@ -71,9 +71,12 @@ public class Main {
 
         for (Region region : regions) {
             File src = new File(world, region.toString());
-            copyFile(src, out);
             File dst = new File(out, region.toString());
-
+            if (!src.exists()) {
+                System.out.println("File " + src + " not exists.");
+                continue;
+            }
+            copyFile(src, dst);
             RegionFile regionFile = new RegionFile(dst);
             for (Map.Entry<Integer, Integer> chunk : chunksDelete.entries()) {
                 int x = chunk.getKey();
@@ -82,7 +85,6 @@ public class Main {
                     regionFile.deleteChunck(x, z);
                     chunksDelete.remove(x, z);
                 }
-
             }
             regionFile.close();
         }
